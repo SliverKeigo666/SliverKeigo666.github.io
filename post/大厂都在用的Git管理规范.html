@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head><!-- hexo injector head_begin start --><style type="text/css">.douban-card-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-height: 400px;
+}
+
+.douban-card {
+    display: flex;
+    margin: 30px 10px;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: antiquewhite;
+    text-decoration: none;
+}
+
+.douban-card:hover {
+    text-decoration: none;
+}
+
+.douban-card-bgimg {
+    position: absolute;
+    width: 115%;
+    height: 115%;
+    filter: blur(15px) brightness(0.6);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.douban-card-img {
+    position: relative;
+    height: 130px;
+    width: 80px;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.douban-card-left:hover .douban-card-img {
+    filter: blur(5px) brightness(0.6);
+    transform: perspective(800px) rotateX(180deg);
+}
+
+.douban-card-left .douban-card-img {
+    transition: all 500ms ease;
+}
+
+.douban-card-left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.douban-card-left .douban-card-status {
+    height: 130px;
+    width: 80px;
+    text-align: center;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 30%;
+    transform: rotateX(180deg);
+    backface-visibility: hidden;
+    transition: all 500ms ease;
+}
+
+.douban-card-left:hover .douban-card-status {
+    transform: perspective(800px) rotateX(0deg);
+}
+
+.douban-card-right {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    font-size: 16px;
+    font-family: "Courier New", Courier, monospace;
+    line-height: 1.3;
+    color: antiquewhite;
+}
+
+.douban-card-item {
+    margin-top: 4px;
+}
+</style><!-- hexo injector head_begin end -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <meta name="author" content="Keigo" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      大厂都在用的Git管理规范 
+      
+      
+      |
+    
+     Keigo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.jpg">
+    <link rel="icon" href="/images/favicon.jpg">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+    
+<link rel="stylesheet" href="/css/figcaption/mac-block.css">
+
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Keigo" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Keigo</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">主页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">归档</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">分类</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">大厂都在用的Git管理规范</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-09-15 17:46:57
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/Git%E7%AE%A1%E7%90%86/" title="Git管理">
+                    <b>#</b> Git管理
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%95%88%E7%8E%87/" title="效率">
+                    #效率
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Git/" title="Git">
+                    #Git
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Git%E7%AE%A1%E7%90%86/" title="Git管理">
+                    #Git管理
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="分支命名"><a href="#分支命名" class="headerlink" title="分支命名"></a>分支命名</h2><h3 id="master-分支"><a href="#master-分支" class="headerlink" title="master 分支"></a>master 分支</h3><p>​    master 为主分支，也是用于部署生产环境的分支，需要确保 master 分支稳定性。master 分支一般由 release 以及 hotfix 分支合并，任何时间都不能直接修改代码。</p>
+<h3 id="develop-分支"><a href="#develop-分支" class="headerlink" title="develop 分支"></a>develop 分支</h3><p>​    develop 为开发环境分支，始终保持最新完成以及 bug 修复后的代码，用于前后端联调。一般开发的新功能时，feature 分支都是基于 develop 分支创建的。</p>
+<h3 id="feature-分支"><a href="#feature-分支" class="headerlink" title="feature 分支"></a>feature 分支</h3><p>​    开发新功能时，以 develop 为基础创建 feature 分支。</p>
+<p>​    分支命名时以 <code>feature/</code> 开头，后面可以加上开发的功能模块， 命名示例：<code>feature/user_module</code>、<code>feature/cart_module</code></p>
+<h3 id="test-分支"><a href="#test-分支" class="headerlink" title="test 分支"></a>test 分支</h3><p>​    test 为测试环境分支，外部用户无法访问，专门给测试人员使用，版本相对稳定。</p>
+<h3 id="release-分支"><a href="#release-分支" class="headerlink" title="release 分支"></a>release 分支</h3><p>​    release 为预上线分支（预发布分支），UAT 测试阶段使用。一般由 test 或 hotfix 分支合并，不建议直接在 release 分支上直接修改代码。</p>
+<h3 id="hotfix-分支"><a href="#hotfix-分支" class="headerlink" title="hotfix 分支"></a>hotfix 分支</h3><p>​    线上出现紧急问题时，需要及时修复，以 master 分支为基线，创建 hotfix 分支。修复完成后，需要合并到 master 分支和 develop 分支。</p>
+<p>​    分支命名以 <code>hotfix/</code> 开头的为修复分支，它的命名规则与 feature 分支类似。</p>
+<h2 id="分支与环境对应关系"><a href="#分支与环境对应关系" class="headerlink" title="分支与环境对应关系"></a>分支与环境对应关系</h2><p>​    在系统开发过程中常用的环境：</p>
+<ul>
+<li>DEV 环境（Development environment）：用于开发者调试使用</li>
+<li>FAT 环境（Feature Acceptance Test environment）：功能验收测试环境，用于测试环境下的软件测试者测试使用</li>
+<li>UAT 环境 （User Acceptance Test environment）：用户验收测试环境，用于生产环境下的软件测试者测试使用</li>
+<li>PRO 环境（Production environment）：生产环境</li>
+</ul>
+<p>​    对应关系：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">分支</th>
+<th style="text-align:left">功能</th>
+<th style="text-align:left">环境</th>
+<th style="text-align:left">可访问</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">master</td>
+<td style="text-align:left">主分支，稳定版本</td>
+<td style="text-align:left">PRO</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">develop</td>
+<td style="text-align:left">开发分支，最新版本</td>
+<td style="text-align:left">DEV</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">feature</td>
+<td style="text-align:left">开发分支，实现新特性</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">否</td>
+</tr>
+<tr>
+<td style="text-align:left">test</td>
+<td style="text-align:left">测试分支，功能测试</td>
+<td style="text-align:left">FAT</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">release</td>
+<td style="text-align:left">预上线分支，发布新版本</td>
+<td style="text-align:left">UAT</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">hotfix</td>
+<td style="text-align:left">紧急修复分支，修复线上 bug</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">否</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="分支合并流程规范"><a href="#分支合并流程规范" class="headerlink" title="分支合并流程规范"></a>分支合并流程规范</h3><p>​        业界常见的两大主分支（master、develop）、三个辅助分支（feature、release、hotfix）</p>
+<p>我们团队在开发时，至少需要保证以下流程：</p>
+<ul>
+<li>develop 分支和 hotfix 分支，必须从 master 分支检出</li>
+<li>由 develop 分支合并到 test 分支</li>
+<li>功能测试无误后，由 test 分支合并到 release 分支</li>
+<li>UAT 测试通过后，由 release 分支合并到 master 分支</li>
+<li>对于工作量小的功能开发（工时小于 1 天），可以直接在 devolop 分支进行开发，否则由 develop 分支检出 feature 分支进行开发，开发完后合并到 develop 分支</li>
+</ul>
+<h2 id="Git-Commit-Message-规范"><a href="#Git-Commit-Message-规范" class="headerlink" title="Git Commit Message 规范"></a>Git Commit Message 规范</h2><p>​        Git commit message 规范指提交代码时编写的规范注释，编写良好的 Commit messages 可以达到 3 个重要的目的：</p>
+<ul>
+<li>加快代码 review 的流程</li>
+<li>帮助我们编写良好的版本发布日志</li>
+<li>让之后的维护者了解代码里出现特定变化和 feature 被添加的原因</li>
+</ul>
+<h3 id="Angular-Git-Commit-Guidelines"><a href="#Angular-Git-Commit-Guidelines" class="headerlink" title="Angular Git Commit Guidelines"></a>Angular Git Commit Guidelines</h3><p>​    业界应用的比较广泛的是 Angular Git Commit Guidelines：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br><span class="line">&lt;BLANK LINE&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;BLANK LINE&gt;</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>type：提交类型</li>
+<li>scope：可选项，本次 commit 波及的范围</li>
+<li>subject：简明扼要的阐述下本次 commit 的主旨，在 <code>Angular Git Commit Guidelines</code> 中强调了三点。使用祈使句，首字母不要大写，结尾无需添加标点</li>
+<li>body: 同样使用祈使句，在主体内容中我们需要把本次 commit 详细的描述一下，比如此次变更的动机</li>
+<li>footer: 描述下与之关联的 issue 或 break change</li>
+</ul>
+<h3 id="简易版"><a href="#简易版" class="headerlink" title="简易版"></a>简易版</h3><p>​        项目中实际可以采用简易版规范：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;):&lt;subject&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="type-规范"><a href="#type-规范" class="headerlink" title="type 规范"></a>type 规范</h3><p>​    <code>Angular Git Commit Guidelines</code> 中推荐的 type 类型如下：</p>
+<ul>
+<li>feat: 新增功能</li>
+<li>fix: 修复 bug</li>
+<li>docs: 仅文档更改</li>
+<li>style: 不影响代码含义的更改（空白、格式设置、缺失 分号等）</li>
+<li>refactor: 既不修复 bug 也不添加特性的代码更改</li>
+<li>perf: 改进性能的代码更改</li>
+<li>test: 添加缺少的测试或更正现有测试</li>
+<li>chore: 对构建过程或辅助工具和库（如文档）的更改</li>
+</ul>
+<p>除此之外，还有一些常用的类型：</p>
+<ul>
+<li>delete：删除功能或文件</li>
+<li>modify：修改功能</li>
+<li>build：改变构建流程，新增依赖库、工具等（例如 webpack、gulp、npm 修改）</li>
+<li>test：测试用例的新增、修改</li>
+<li>ci：自动化流程配置修改</li>
+<li><p>revert：回滚到上一个版本</p>
+<h3 id="单次提交注意事项"><a href="#单次提交注意事项" class="headerlink" title="单次提交注意事项"></a>单次提交注意事项</h3></li>
+<li><p>提交问题必须为同一类别</p>
+</li>
+<li>提交问题不要超过 3 个</li>
+<li>提交的 commit 发现不符合规范，<code>git commit --amend -m &quot;新的提交信息&quot;</code> 或 <code>git reset --hard HEAD</code> 重新提交一次</li>
+</ul>
+<h2 id="配置-gitignore-文件"><a href="#配置-gitignore-文件" class="headerlink" title="配置.gitignore 文件"></a>配置.gitignore 文件</h2><p><code>.gitignore</code> 是一份用于忽略不必提交的文件的列表，项目中可以根据实际需求统一<code>.gitignore</code> 文件减少不必要的文件提交和冲突，净化代码库环境。</p>
+<p>​    通用文件示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HELP.md</span><br><span class="line">target/</span><br><span class="line">!.mvn/wrapper/maven-wrapper.jar</span><br><span class="line">!**/src/main/**/target/</span><br><span class="line">!**/src/test/**/target/</span><br><span class="line"></span><br><span class="line">### STS ###</span><br><span class="line">.apt_generated</span><br><span class="line">.classpath</span><br><span class="line">.factorypath</span><br><span class="line">.project</span><br><span class="line">.settings</span><br><span class="line">.springBeans</span><br><span class="line">.sts4-cache</span><br><span class="line"></span><br><span class="line">### IntelliJ IDEA ###</span><br><span class="line">.idea</span><br><span class="line">*.iws</span><br><span class="line">*.iml</span><br><span class="line">*.ipr</span><br><span class="line"></span><br><span class="line">### NetBeans ###</span><br><span class="line">/nbproject/private/</span><br><span class="line">/nbbuild/</span><br><span class="line">/dist/</span><br><span class="line">/nbdist/</span><br><span class="line">/.nb-gradle/</span><br><span class="line">build/</span><br><span class="line">!**/src/main/**/build/</span><br><span class="line">!**/src/test/**/build/</span><br><span class="line"></span><br><span class="line">### VS Code ###</span><br><span class="line">.vscode/</span><br><span class="line"></span><br><span class="line"># Log file</span><br><span class="line">*.log</span><br><span class="line">/logs*</span><br><span class="line"></span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"></span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp/</span><br><span class="line"></span><br><span class="line"># Package Files #</span><br><span class="line">*.jar</span><br><span class="line">*.war</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line">*.cmd</span><br></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>此外，还有一些其他建议：</p>
+<ul>
+<li>master 分支的每一次更新，都建议打 tag 添加标签，通常为对应版本号，便于管理</li>
+<li>feature 分支、hotfix 分支在合并后可以删除，避免分支过多管理混乱</li>
+<li>每次 pull 代码前，提交本地代码到本地库中，否则可能回出现合并代码出错，导致代码丢失</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/post/MyBatisPlus%E7%9A%84join%E8%81%94%E8%A1%A8%E6%9F%A5%E8%AF%A2.html" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-09-15 17:46:57
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/Git%E7%AE%A1%E7%90%86/" title="Git管理">
+                        <b>#</b> Git管理
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%95%88%E7%8E%87/" title="效率">
+                        #效率
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Git/" title="Git">
+                        #Git
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Git%E7%AE%A1%E7%90%86/" title="Git管理">
+                        #Git管理
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/post/%E6%B5%81%E6%B5%AA%E5%9C%A8%E8%A2%AB%E8%B5%84%E6%9C%AC%E5%AE%9A%E4%B9%89%E7%9A%84%E6%83%85%E6%84%9F%E4%B8%96%E7%95%8C%E9%87%8C.html" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E5%91%BD%E5%90%8D"><span class="toc-text">分支命名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#master-%E5%88%86%E6%94%AF"><span class="toc-text">master 分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#develop-%E5%88%86%E6%94%AF"><span class="toc-text">develop 分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#feature-%E5%88%86%E6%94%AF"><span class="toc-text">feature 分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#test-%E5%88%86%E6%94%AF"><span class="toc-text">test 分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#release-%E5%88%86%E6%94%AF"><span class="toc-text">release 分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hotfix-%E5%88%86%E6%94%AF"><span class="toc-text">hotfix 分支</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB"><span class="toc-text">分支与环境对应关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E6%B5%81%E7%A8%8B%E8%A7%84%E8%8C%83"><span class="toc-text">分支合并流程规范</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-Commit-Message-%E8%A7%84%E8%8C%83"><span class="toc-text">Git Commit Message 规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Angular-Git-Commit-Guidelines"><span class="toc-text">Angular Git Commit Guidelines</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E6%98%93%E7%89%88"><span class="toc-text">简易版</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-%E8%A7%84%E8%8C%83"><span class="toc-text">type 规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E6%AC%A1%E6%8F%90%E4%BA%A4%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">单次提交注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-gitignore-%E6%96%87%E4%BB%B6"><span class="toc-text">配置.gitignore 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src="/plugins/valine.min.js" onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'ZHp4Vl1HknBn5gSgzVcSjjeY-MdYXbMMI',
+        appKey: 'GvZVpSJquteM0VVwoRUddT09',
+        placeholder: 'Just Go Go😊!',
+        avatar: 'https://valine.js.org/#/avatar',
+        lang: 'zh-CN'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/SliverKeigo">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/SliverKeigo">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2023 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%A4%A7%E5%8E%82%E9%83%BD%E5%9C%A8%E7%94%A8%E7%9A%84Git%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83 + '&url=' + https%3A%2F%2Fsliverkeigo.github.io%2Fpost%2F%25E5%25A4%25A7%25E5%258E%2582%25E9%2583%25BD%25E5%259C%25A8%25E7%2594%25A8%25E7%259A%2584Git%25E7%25AE%25A1%25E7%2590%2586%25E8%25A7%2584%25E8%258C%2583.html + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://sliverkeigo.github.io/post/%E5%A4%A7%E5%8E%82%E9%83%BD%E5%9C%A8%E7%94%A8%E7%9A%84Git%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83.html" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+</html>
